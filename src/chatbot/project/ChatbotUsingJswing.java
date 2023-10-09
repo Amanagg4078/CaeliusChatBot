@@ -1,6 +1,10 @@
 package chatbot.project;
-
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,6 +17,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+
+
 
 public class ChatbotUsingJswing extends JFrame implements ActionListener  {
 	private JTextArea textArea=new JTextArea();
@@ -53,12 +60,18 @@ public class ChatbotUsingJswing extends JFrame implements ActionListener  {
 					
 					if(e.getSource()==button) {
 						String text=textField.getText();
-						textArea.append("You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->You->" + text + "\n");
+						textArea.append("You: " + text + "\n");
 						textField.setText("");
 						
-						if(text.contains("Hi") || text.contains("hi")) {
-							replyMethod("Hiii,How are you");
+						String answer = null;
+						try {
+							answer = getAnsFromDb(text);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
+						replyMethod(answer);
+						
 					}
 				}
 				
@@ -66,18 +79,41 @@ public class ChatbotUsingJswing extends JFrame implements ActionListener  {
 	}
 	 
 	 public void replyMethod(String text) {
-			textArea.append("Bot->" + text + "\n");
-		}
+			textArea.append("Bot: " + text + "\n");
+	}
+	
+	
+	 public static Connection establishConnection() throws SQLException {
+	        String jdbcURL = "jdbc:mysql://localhost:3306/chatbot";
+	        String username = "Aman";
+	        String password = "Chatbot@123";
+	        
+	        Connection connection = DriverManager.getConnection(jdbcURL, username, password);
+	        return connection;
+	    }
 	 
+	 public static String getAnsFromDb(String query) throws SQLException{
+		 String answer=null;
+		 
+		 try(Connection con=establishConnection()){
+			 String queryForDb="SELECT Result FROM QnA WHERE Query = ? ";
+			 try(PreparedStatement preparedStatement=con.prepareStatement(queryForDb)){
+				 preparedStatement.setString(1, query);
+				 try (ResultSet rs=preparedStatement.executeQuery()){
+					 if(rs.next()) {
+						 answer=rs.getString("Result");
+					 }
+				 }
+			 }
+		 }
+		 
+		 return answer;
+	 }
 	
 	public static void main(String[] args) {
 		
 		ChatbotUsingJswing chatbot= new ChatbotUsingJswing();
 		
-		
-		
-		
-
 	}
 
 	@Override
@@ -85,7 +121,7 @@ public class ChatbotUsingJswing extends JFrame implements ActionListener  {
 		// TODO Auto-generated method stub
 		
 		if(e.getSource()==button) {
-			System.out.println(("Welcome "+ textField.getText()));
+			
 		}
 		
 	}
