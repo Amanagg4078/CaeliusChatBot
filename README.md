@@ -68,7 +68,7 @@ Before you begin, ensure you have met the following requirements:
 
 3. Customize the database connection details in the `establishConnection` method of `ChatbotUsingJswing.java`.
 
-4. If you want to use the predefined answer database, import the `database.sql` file provided in the project to set up the database schema and initial data.
+4. If you want to use the predefined answer database, import the `QueriesAndResult.sql` file provided in the project to set up the database schema and initial data.
 
 5. Build and run the project.
 
@@ -82,7 +82,6 @@ Before you begin, ensure you have met the following requirements:
 
 - The chatbot will respond with an answer or perform a Google search if it doesn't have a predefined answer.
 
-- You can also use the "Evaluate" button to directly evaluate mathematical expressions.
 
 ## Database Setup
 
@@ -90,7 +89,7 @@ If you choose to use the predefined answer database, follow these steps:
 
 1. Create a MySQL database.
 
-2. Import the `database.sql` file provided in the project to set up the database schema and initial data.
+2. Import the `QueriesAndResult.sql` file provided in the project to set up the database schema and initial data.
 
 3. Update the `establishConnection` method in `ChatbotUsingJswing.java` with your database connection details.
 
