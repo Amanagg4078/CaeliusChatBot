@@ -2,6 +2,7 @@ package chatbot.project;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 public class ChatbotUsingJswing extends JFrame  {
 	private JTextArea textArea = new JTextArea();
 	private JTextField textField = new JTextField();
-	private JButton button = new JButton("Go");
+	private JButton button = new JButton("Submit");
 	private ImageIcon image = new ImageIcon("logo.png");
 
 	ChatbotUsingJswing() {
@@ -33,27 +33,38 @@ public class ChatbotUsingJswing extends JFrame  {
 		frame.setVisible(true);
 		frame.setResizable(false);
 		frame.setLayout(null);
-		frame.setSize(600, 600);
-		frame.getContentPane().setBackground(new Color(216, 75, 32));
+		frame.setSize(700, 560);
+		frame.getContentPane().setBackground(new Color(153, 192, 255));
 		frame.setTitle("ChatBot using java");
+		
 		frame.add(textArea);
-		textArea.setSize(400, 400);
-		textArea.setLocation(1, 1);
+
+		textArea.setBounds(0, 0, 600, 400);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
+		textArea.setFont(new Font("Monospaced",Font.PLAIN,25));
 
 		frame.add(button);
-		button.setSize(400, 40);
-		button.setLocation(300, 420);
+		button.setSize(100, 40);
+		button.setLocation(570, 460);
+		button.setFont(new Font("Monospaced",Font.PLAIN,15));
+		
 
 		frame.add(textField);
-		textField.setSize(300, 40);
-		textField.setLocation(1, 420);
+		textField.setSize(550, 40);
+		textField.setLocation(4, 460);
+		textField.setFont(new Font("Monospaced",Font.PLAIN,25));
 
 		frame.setIconImage(image.getImage());
 		
-		JScrollPane sp=new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		textArea.add(sp);
+		JScrollPane sp = new JScrollPane(textArea);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sp.setBounds(5, 5, 675, 450);
+
+        frame.add(sp);
+		
+		
 		
 
 		button.addActionListener(new ActionListener() {
