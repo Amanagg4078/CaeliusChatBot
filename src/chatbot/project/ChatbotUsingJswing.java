@@ -17,10 +17,11 @@ import java.net.URLEncoder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ChatbotUsingJswing extends JFrame implements ActionListener {
+public class ChatbotUsingJswing extends JFrame  {
 	private JTextArea textArea = new JTextArea();
 	private JTextField textField = new JTextField();
 	private JButton button = new JButton("Go");
@@ -50,6 +51,10 @@ public class ChatbotUsingJswing extends JFrame implements ActionListener {
 		textField.setLocation(1, 420);
 
 		frame.setIconImage(image.getImage());
+		
+		JScrollPane sp=new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		textArea.add(sp);
+		
 
 		button.addActionListener(new ActionListener() {
 
@@ -193,14 +198,6 @@ public class ChatbotUsingJswing extends JFrame implements ActionListener {
 
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-		if (e.getSource() == button) {
-
-		}
-
-	}
+	
 
 }
