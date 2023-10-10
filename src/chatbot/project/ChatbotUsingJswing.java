@@ -27,7 +27,6 @@ public class ChatbotUsingJswing extends JFrame {
     private JTextField textField = new JTextField();
     private JButton button = new JButton("Submit");
     private ImageIcon image = new ImageIcon("logo.png");
-    private JScrollPane sp = new JScrollPane(textArea);
 
     public ChatbotUsingJswing() {
         initializeFrame();
@@ -50,7 +49,6 @@ public class ChatbotUsingJswing extends JFrame {
         textArea.setBounds(5, 5, 675, 450);
         textArea.setEditable(false);
         textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 25));
         add(new JScrollPane(textArea));
 
@@ -63,14 +61,6 @@ public class ChatbotUsingJswing extends JFrame {
         textField.setLocation(4, 460);
         textField.setFont(new Font("Monospaced", Font.PLAIN, 25));
         add(textField);
-        
-        setIconImage(image.getImage());
-		
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        sp.setBounds(5, 5, 675, 450);
-
-        add(sp);
     }
 
     private void addListeners() {
