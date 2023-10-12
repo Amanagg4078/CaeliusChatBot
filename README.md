@@ -1,6 +1,10 @@
 # Java Swing Chatbot
 
+
 ![Chatbot Logo](logo.png)
+
+## Example demo
+![](demo.gif)
 
 Java Swing Chatbot is a simple chatbot application built with Java Swing. It allows users to interact with the chatbot, ask questions, and get responses. The chatbot can answer predefined questions from a database and also perform Google searches for unknown queries.
 
