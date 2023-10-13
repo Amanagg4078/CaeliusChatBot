@@ -35,49 +35,47 @@ public class ChatbotUsingJswing extends JFrame {
 	private ImageIcon image = new ImageIcon("logo.png");
 	
 	ChatbotUsingJswing() {
-		JFrame frame = new JFrame();
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.setLayout(null);
-		frame.setSize(700, 820);
-		frame.getContentPane().setBackground(new Color(31, 65, 114));
-		frame.setTitle("ChatBot");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setLayout(null);
+		this.setSize(700, 820);
+		this.getContentPane().setBackground(new Color(31, 65, 114));
+		this.setTitle("ChatBot");
 		
 		JLabel label=new JLabel(image);
 		label.setBounds(230, 5, image.getIconWidth(), image.getIconHeight());
-		frame.add(label);
-		System.out.println( "height " + image.getIconHeight() + " width " + image.getIconWidth());
+		this.add(label);
 		
 		JLabel welcomeLabel = new JLabel("Welcome to Chatbot, Ask me something.");
         welcomeLabel.setFont(new Font("Rockwell", Font.PLAIN, 25));
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         welcomeLabel.setBounds(10, 271, 675, 40); // Adjust the dimensions as needed
-        frame.add(welcomeLabel);
+        this.add(welcomeLabel);
 
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		textArea.setFont(new Font("Rockwell", Font.PLAIN, 25));
-		frame.add(textArea);
+		textArea.setFont(new Font("Rockwell", Font.PLAIN, 20));
+		this.add(textArea);
 
 		
-//
+
 		button.setSize(120, 40);
 		button.setLocation(560, 730);
 		button.setFont(new Font("Rockwell", Font.PLAIN, 15));
 		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		button.setFocusable(false);
-		frame.add(button);
+		this.add(button);
 
-		frame.add(textField);
+		this.add(textField);
 		textField.setSize(550, 40);
 		textField.setLocation(5, 730);
 		textField.setFont(new Font("Rockwell", Font.PLAIN, 25));
 		textField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
-		frame.setIconImage(image.getImage());
+		this.setIconImage(image.getImage());
 
 		JScrollPane sp = new JScrollPane(textArea);
 		sp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
@@ -85,7 +83,7 @@ public class ChatbotUsingJswing extends JFrame {
 		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setBounds(5, 266, 675, 450);
 
-		frame.add(sp);
+		this.add(sp);
 
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
@@ -101,8 +99,7 @@ public class ChatbotUsingJswing extends JFrame {
 		textField.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        // This code will execute when the Enter key is pressed in the JTextField.
-		        // It simulates a button click.
+		    
 		        button.doClick();
 		    }
 		});
@@ -124,14 +121,20 @@ public class ChatbotUsingJswing extends JFrame {
 					} else {
 						if (isMathematicalExpression(text)) {
 							double result = 0.0;
+							boolean valid=true;
 							try {
 								result = evaluate(text);
-							} catch (IOException e1) {
-
+							} catch (IOException | NumberFormatException e1) {
+								System.out.println("exception aagi");
+								valid=false;
 								e1.printStackTrace();
 							}
+							if(valid) {
 							String s = "The result is: " + Double.toString(result);
 							replyMethod(s);
+							}else {
+								replyMethod("Make sure the expression is valid and provide spaces between operands");
+							}
 						} else {
 							String answer = null;
 							try {
@@ -144,26 +147,27 @@ public class ChatbotUsingJswing extends JFrame {
 							if (answer != null) {
 								replyMethod(answer);
 							} else {
-								replyMethod(
-										"Sorry, I don't have an answer for that question. Let me search it for you...");
+								replyMethod("Sorry, I don't have an answer for that question. Let me search it for you...");
 								try {
 									searchInGoogle(text);
 								} catch (IOException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
+								}
 							}
 						}
 					}
 
 				}
-			}
+			
 
 		});
+		
 
 	}
 
-	public double evaluate(String text) throws IOException {
+	public double evaluate(String text) throws IOException,NumberFormatException {
 		String[] token = text.split("\\s+");
 
 		if (token.length < 3 || token.length % 2 == 0) {
@@ -229,21 +233,24 @@ public class ChatbotUsingJswing extends JFrame {
 		Connection connection = DriverManager.getConnection(jdbcURL, username, password);
 		return connection;
 	}
+	
+	
 
 	public static String getAnsFromDb(String query) throws SQLException {
 		String answer = null;
 
-		try (Connection con = establishConnection()) {
-			String queryForDb = "SELECT Result FROM QnA WHERE Query = ? ";
-			try (PreparedStatement preparedStatement = con.prepareStatement(queryForDb)) {
-				preparedStatement.setString(1, query);
-				try (ResultSet rs = preparedStatement.executeQuery()) {
-					if (rs.next()) {
-						answer = rs.getString("Result");
-					}
-				}
+		try {
+			Connection con = establishConnection();
+		     PreparedStatement preparedStatement = con.prepareStatement("SELECT Result FROM QnA WHERE Query = ?");
+			    preparedStatement.setString(1, query);
+			    ResultSet rs = preparedStatement.executeQuery();
+			    if (rs.next()) {
+			        answer = rs.getString("Result");
+			    }
+			} catch (SQLException e) {
+			    e.printStackTrace();
 			}
-		}
+
 
 		return answer;
 	}
@@ -254,6 +261,8 @@ public class ChatbotUsingJswing extends JFrame {
 	            ChatbotUsingJswing chatbot = new ChatbotUsingJswing();
 	        }
 	    });
+		
+
 
 	}
 
