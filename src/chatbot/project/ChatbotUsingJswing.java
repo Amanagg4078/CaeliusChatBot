@@ -88,7 +88,7 @@ public class ChatbotUsingJswing extends JFrame {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
 				button.setBackground(new Color(241, 180, 187));
-				button.setBorder(BorderFactory.createLineBorder(new Color(241, 180, 187), 3, true));
+				button.setBorder(BorderFactory.createLineBorder(new Color(241, 180, 187), 3, false));
 			}
 
 			public void mouseExited(MouseEvent e) {
@@ -99,7 +99,6 @@ public class ChatbotUsingJswing extends JFrame {
 		textField.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    
 		        button.doClick();
 		    }
 		});
@@ -125,7 +124,6 @@ public class ChatbotUsingJswing extends JFrame {
 							try {
 								result = evaluate(text);
 							} catch (IOException | NumberFormatException e1) {
-								System.out.println("exception aagi");
 								valid=false;
 								e1.printStackTrace();
 							}
@@ -173,6 +171,8 @@ public class ChatbotUsingJswing extends JFrame {
 		if (token.length < 3 || token.length % 2 == 0) {
 			replyMethod("Make sure the expression is valid and provide spaces between operands");
 		}
+		
+		
 
 		double result = Double.parseDouble(token[0]);
 		for (int i = 1; i < token.length; i += 2) {
@@ -229,7 +229,7 @@ public class ChatbotUsingJswing extends JFrame {
 		String jdbcURL = "jdbc:mysql://localhost:3306/chatbot";
 		String username = "Aman";
 		String password = "Chatbot@123";
-
+		
 		Connection connection = DriverManager.getConnection(jdbcURL, username, password);
 		return connection;
 	}
@@ -240,12 +240,14 @@ public class ChatbotUsingJswing extends JFrame {
 		String answer = null;
 
 		try {
-			Connection con = establishConnection();
-		     PreparedStatement preparedStatement = con.prepareStatement("SELECT Result FROM QnA WHERE Query = ?");
+				Connection con = establishConnection();
+				PreparedStatement preparedStatement = con.prepareStatement("SELECT Result FROM QnA WHERE Query = ?");
 			    preparedStatement.setString(1, query);
 			    ResultSet rs = preparedStatement.executeQuery();
+			    
 			    if (rs.next()) {
 			        answer = rs.getString("Result");
+			        
 			    }
 			} catch (SQLException e) {
 			    e.printStackTrace();
