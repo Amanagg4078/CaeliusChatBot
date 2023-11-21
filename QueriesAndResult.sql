@@ -1,5 +1,5 @@
 CREATE DATABASE chatbot;
--- hello
+-- hello main
 USE chatbot;
 
 CREATE TABLE QnA(
